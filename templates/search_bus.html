@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+ {% include 'phead.html' %}
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Bus</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .search-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .search-form {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            flex: 1;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #4338ca;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .bus-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .bus-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .bus-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .detail-group {
+            margin-bottom: 10px;
+        }
+        .detail-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .detail-value {
+            color: #333;
+            font-weight: bold;
+        }
+        .price {
+            font-size: 1.2em;
+            color: #4f46e5;
+            font-weight: bold;
+        }
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+        .bus-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bus-thumbnail {
+            height: 100px;
+
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+
+        .bus-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .bus-type {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #4f46e5;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .book-btn {
+            display: inline-block;
+            background: #4f46e5;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .book-btn:hover {
+            background: #4338ca;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container" style="margin-top:50px;">
+        <h1>Search Bus Schedules</h1>
+
+        <form method="POST" class="search-form">
+            <div class="form-group">
+                <label for="departure_station">From</label>
+                <select name="departure_station" id="departure_station" required>
+                    <option value="">Select Departure Station</option>
+                    {% for station in stations %}
+                    <option value="{{ station['_id'] }}"
+                            {% if selected_departure and selected_departure == station['_id']|string %}selected{% endif %}>
+                        {{ station['station_name'] }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="arrival_station">To</label>
+                <select name="arrival_station" id="arrival_station" required>
+                    <option value="">Select Arrival Station</option>
+                    {% for station in stations %}
+                    <option value="{{ station['_id'] }}"
+                            {% if selected_arrival and selected_arrival == station['_id']|string %}selected{% endif %}>
+                        {{ station['station_name'] }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="travel_date">Travel Date</label>
+                <input type="date" name="travel_date" id="travel_date" required
+                       value="{{ selected_date if selected_date }}">
+            </div>
+
+            <div class="form-group" style="align-self: flex-end;">
+                <button type="submit">Search Buses</button>
+            </div>
+        </form>
+
+        {% if schedules %}
+        <div class="results">
+            <h2>Available Buses</h2>
+            {% for schedule in schedules %}
+            <div class="bus-card">
+                <div class="bus-header">
+                    <div class="bus-info">
+                        {% if schedule.bus_details and schedule.bus_details.bus_Image %}
+                        <img src="../static/photos/{{ schedule.bus_details.bus_Image }}" class="bus-thumbnail" style="margin-left: 70px;" alt="Bus Image">
+                        {% endif %}
+                        <h3 style="margin-left: 270px; font-size: 25px;" >{{ schedule.bus_details.bus_name if schedule.bus_details else 'Unknown Bus' }}</h3>
+                    </div>
+                    <div class="price">${{ schedule.ticket_price }}</div>
+                </div>
+                <div class="bus-details">
+                    <div class="detail-group" style="margin-left: 100px;">
+                        <div class="detail-label">Departure</div>
+                        <div class="detail-value">
+                            {{ schedule.departure_station_name }}<br>
+                            {{ schedule.departure_time_fmt }} - {{ schedule.departure_day }}
+                        </div>
+                    </div>
+
+                    <div class="detail-group" style="margin-left: 130px;">
+                        <div class="detail-label"  >Duration</div>
+                        <div class="detail-value">{{ schedule.duration }}</div>
+                    </div>
+
+
+                    <div class="detail-group" >
+                        <div class="detail-label">Arrival</div>
+                        <div class="detail-value">
+                            {{ schedule.arrival_station_name }}<br>
+                            {{ schedule.arrival_time_fmt }} - {{ schedule.arrival_day }}
+                        </div>
+                    </div>
+                </div>
+                <div class="bus-footer">
+                    <div class="bus-type">{{ schedule.bus_details.bus_type if schedule.bus_details else 'Standard' }}</div>
+<a href="book_ticket?bus_id={{ schedule.bus_id }}&schedule_id={{ schedule._id }}" class="book-btn">BOOK TICKET</a>
+                </div>
+            </div>
+
+
+            {% endfor %}
+        </div>
+        {% elif request.method == 'POST' %}
+        <div class="no-results">
+            <h2>No buses found</h2>
+            <p>Try different search criteria or another date.</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+

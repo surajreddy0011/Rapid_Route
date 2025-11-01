@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<!-- {% include 'phead.html' %} -->
+<html lang="en">
+<head>
+  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bus Seat Selection - {{ bus.bus_name }}</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f1f3f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .bus {
+      background-color: #fff;
+      width: 90%;
+      max-width: 800px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+    }
+    
+    .bus-info {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .bus-info h1 {
+      margin-bottom: 5px;
+      color: #333;
+    }
+    
+    .bus-info p {
+      color: #666;
+      margin: 5px 0;
+    }
+    
+    .seat-legend {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .legend-box {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+    
+    .available {
+      background-color: #e0e0e0;
+      border: 2px solid #ccc;
+    }
+    
+    .selected {
+      background-color: #4caf50;
+      border: 2px solid #2e7d32;
+    }
+    
+    .booked {
+      background-color: #d32f2f;
+      border: 2px solid #b71c1c;
+    }
+    
+    .seat-map {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+      max-height: 500px;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    
+    .seat-row {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .aisle {
+      width: 50px;
+    }
+    
+    .seat {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+    
+    .seat input {
+      appearance: none;
+      width: 40px;
+      height: 40px;
+      background-color: #e0e0e0;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      transition: 0.3s ease;
+    }
+    
+    .seat input:hover {
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    .seat input:checked {
+      background-color: #4caf50;
+      border-color: #2e7d32;
+    }
+    
+    .seat input:disabled {
+      background-color: #d32f2f;
+      border-color: #b71c1c;
+      cursor: not-allowed;
+    }
+    
+    .seat span {
+      margin-top: 6px;
+      font-size: 14px;
+    }
+    
+    .footer {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      gap: 20px;
+    }
+    
+    .summary {
+      display: flex;
+      gap: 20px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    #continueButton {
+      padding: 10px 20px;
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    
+    #continueButton:hover {
+      background: #0d47a1;
+    }
+    
+    /* Bus front */
+    .bus-front {
+      width: 60%;
+      height: 40px;
+      background-color: #333;
+      border-radius: 20px 20px 0 0;
+      margin: 0 auto 20px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+    }
+    
+    /* Scrollbar styling */
+    .seat-map::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .seat-map::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+    
+    .seat-map::-webkit-scrollbar-thumb {
+      background: #c5c5c5;
+      border-radius: 4px;
+    }
+    
+    .seat-map::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+    
+    
+    @media (max-width: 600px) {
+      .seat input {
+        width: 30px;
+        height: 30px;
+      }
+    
+      .seat span {
+        font-size: 12px;
+      }
+    
+      .aisle {
+        width: 30px;
+      }
+    
+      .footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    
+      #continueButton {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bus">
+    <div class="bus-info">
+      <h1>Select Your Seat</h1>
+      <p>{{ bus.bus_name }} ({{ bus.bus_number }})</p>
+      <p>{{ bus.bus_type }} - {{ total_seats }} Seats</p>
+      {% if schedule %}
+      <p>Price per seat: ₹{{ schedule.ticket_price }}</p>
+      {% endif %}
+    </div>
+    
+    <div class="seat-legend">
+      <div class="legend-item">
+        <div class="legend-box available"></div>
+        <span>Available</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-box selected"></div>
+        <span>Selected</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-box booked"></div>
+        <span>Booked</span>
+      </div>
+    </div>
+    
+    <div class="bus-front">DRIVER</div>
+    
+    <div class="seat-map">
+      {% for row in range(1, rows) %}
+      <div class="seat-row">
+        <label class="seat">
+          <input type="checkbox" data-price="{{ schedule.ticket_price if schedule else '200' }}" data-seat="{{ row }}A" {% if row|string + 'A' in booked_seats %}disabled{% endif %} />
+          <span>{{ row }}A</span>
+        </label>
+        <label class="seat">
+          <input type="checkbox" data-price="{{ schedule.ticket_price if schedule else '200' }}" data-seat="{{ row }}B" {% if row|string + 'B' in booked_seats %}disabled{% endif %} />
+          <span>{{ row }}B</span>
+        </label>
+        <div class="aisle"></div>
+        <label class="seat">
+          <input type="checkbox" data-price="{{ schedule.ticket_price if schedule else '200' }}" data-seat="{{ row }}C" {% if row|string + 'C' in booked_seats %}disabled{% endif %} />
+          <span>{{ row }}C</span>
+        </label>
+        <label class="seat">
+          <input type="checkbox" data-price="{{ schedule.ticket_price if schedule else '200' }}" data-seat="{{ row }}D" {% if row|string + 'D' in booked_seats %}disabled{% endif %} />
+          <span>{{ row }}D</span>
+        </label>
+      </div>
+      {% endfor %}
+      
+      
+      {% if rows > 0 %}
+      <div class="seat-row">
+        {% if remaining_seats >= 1 %}
+        <label class="seat">
+          <input type="checkbox" data-price="{{ schedule.ticket_price if schedule else '200' }}" data-seat="{{ rows }}A" {% if rows|string + 'A' in booked_seats %}disabled{% endif %} />
+          <span>{{ rows }}A</span>
+        </label>
+        {% endif %}
+        
+        {% if remaining_seats >= 2 %}
+        <label class="seat">
+          <input type="checkbox" data-price="{{ schedule.ticket_price if schedule else '200' }}" data-seat="{{ rows }}B" {% if rows|string + 'B' in booked_seats %}disabled{% endif %} />
+          <span>{{ rows }}B</span>
+        </label>
+        {% endif %}
+        
+        <div class="aisle"></div>
+        
+        {% if remaining_seats >= 3 %}
+        <label class="seat">
+          <input type="checkbox" data-price="{{ schedule.ticket_price if schedule else '200' }}" data-seat="{{ rows }}C" {% if rows|string + 'C' in booked_seats %}disabled{% endif %} />
+          <span>{{ rows }}C</span>
+        </label>
+        {% endif %}
+        
+        {% if remaining_seats >= 4 %}
+        <label class="seat">
+          <input type="checkbox" data-price="{{ schedule.ticket_price if schedule else '200' }}" data-seat="{{ rows }}D" {% if rows|string + 'D' in booked_seats %}disabled{% endif %} />
+          <span>{{ rows }}D</span>
+        </label>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="footer">
+      <div class="summary">
+        <div id="seatCount">Selected: 0</div>
+        <div id="totalPrice">Total: $0</div>
+      </div>
+      <button id="continueButton">Continue</button>
+    </div>
+  </div>
+
+  <script>
+    const checkboxes = document.querySelectorAll('.seat input[type="checkbox"]:not(:disabled)');
+    const seatCount = document.getElementById('seatCount');
+    const totalPrice = document.getElementById('totalPrice');
+    
+    function updateSummary() {
+      let selected = 0;
+      let total = 0;
+
+      checkboxes.forEach(box => {
+        if (box.checked) {
+          selected++;
+          total += parseInt(box.dataset.price || "0", 10);
+        }
+      });
+
+      seatCount.textContent = `Selected: ${selected}`;
+      totalPrice.textContent = `Total: $${total}`;
+    }
+
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', updateSummary);
+    });
+
+    document.getElementById('continueButton').addEventListener('click', () => {
+      const selectedSeats = [...document.querySelectorAll('.seat input:checked')]
+        .map(input => input.dataset.seat);
+      
+      if (selectedSeats.length === 0) {
+        alert('Please select at least one seat to continue.');
+        return;
+      }
+      
+      // Redirect to passenger details page instead of payment
+      window.location.href = `/passenger_details?bus_id={{ bus_id }}&schedule_id={{ schedule_id }}&seats=${selectedSeats.join(',')}`;
+    });
+  </script>
+</body>
+</html>

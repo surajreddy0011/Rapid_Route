@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include 'ahead.html' %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bus Fleet Manager</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+    .ml-10{margin-left: 10px;}
+    .ml-20{margin-left: 20px;}
+    .ml-50{margin-left: 50px;}
+    .ml-150{margin-left: 150px;}
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    header {
+      margin-bottom: 2rem;
+    }
+    header h1 {
+      font-size: 2rem;
+      color: #333;
+    }
+    header p {
+      color: #777;
+    }
+    .section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+    .section h2 {
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      color: #222;
+    }
+    form {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    label {
+      font-weight: 500;
+      color: #555;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      background: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      margin-top: 1rem;
+    }
+    button:hover {
+      background: #1976D2;
+    }
+    .empty-state {
+      text-align: center;
+      color: #777;
+      padding: 2rem 0;
+    }
+    .bus-list {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .bus-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .bus-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    .bus-card-content {
+      padding: 1rem;
+    }
+    .bus-card h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+      color: #333;
+    }
+    .bus-card p {
+      margin: 0.25rem 0;
+      color: #555;
+      font-size: 0.9rem;
+    }
+    .bus-tag {
+      display: inline-block;
+      background: #e3f2fd;
+      color: #2196F3;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Bus Fleet Manager</h1>
+      <p>Add and manage your bus fleet</p>
+    </header>
+
+    <section class="section">
+      <h2>Add New Bus</h2>
+      <form action="add_bus_action" method="post" enctype="multipart/form-data">
+        <label for="bus_Image">Bus Image </label>
+        <input type="file" id="bus_Image" name="bus_Image" accept="image/*" required />
+        <div class="ml-20">
+          <label for="bus_name">Bus Name</label>
+          <input type="text" id="bus_name" name="bus_name" placeholder="Enter bus name">
+        </div>
+        <div class="ml-20">
+          <label for="bus_number">Bus Number</label>
+          <input type="text" id="bus_number" name="bus_number"  placeholder="Enter bus number">
+        </div>
+        <div>
+          <label for="bus_type">Bus Type</label>
+          <select id="bus_type" name="bus_type">
+            <option value="">Select bus type</option>
+            <option value="Luxury">Luxury</option>
+            <option value="Semi-Luxury">Semi-Luxury</option>
+            <option value="Standard">Standard</option>
+            <option value="Express">Express</option>
+          </select>
+        </div>
+        <div>
+          <label for="seats">Number of Seats</label>
+          <input type="number" id="seats" name="seats" placeholder="Enter number of seats">
+        </div>
+
+        <button type="submit">Add Bus</button>
+      </form>
+    </section>
+
+    <section class="section">
+      <h2>Bus Fleet</h2>
+
+      <div class="bus-list">
+      <div class="">
+  {% for bus in buses %}
+    <div class="bus-card">
+      <img src="../static/photos/{{bus['bus_Image']}}" style="width:50%;height:50%" alt="Bus Image">
+      <div class="bus-card-content">
+        <h3>{{bus['bus_name']}}</h3>
+        <p>Bus Number: {{bus['bus_number']}}</p>
+        <p>Driver: {{bus['driver_id']}}</p>
+        <p>Seats: {{bus['seats']}}</p>
+        <span class="bus-tag">{{bus['bus_type']}}</span>
+          <a href="/schedules?driver_id={{bus['driver_id']}}&bus_id={{bus['_id']}}" class="ml-150">ADD SCHEDULE</a>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+    </section>
+  </div>
+</body>
+</html>

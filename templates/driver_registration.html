@@ -1,0 +1,64 @@
+{% include 'links.html'%}
+
+<div class="bg">
+  <div class="title text-center text-blue  "> New driver Registration</div>
+  <div class="row">
+    <form action="driver_registration_action" method="post" enctype="multipart/form-data">
+
+      <div class="card  ml-420 p-20">
+        <div class="form-group row">
+          <div class="col-md-6 ml-20 wid-45">
+            <label for="name"> Name</label>
+            <input type="text" name="name" id="name" placeholder="Enter Name" class="form-control">
+          </div>
+
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6 ml-20 wid-45 ">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="Enter Email" class="form-control">
+          </div>
+          <div class="col-md-6 ml-30 wid-45">
+            <label for="phone">Phone</label>
+            <input type="number" name="phone" id="phone" placeholder="Enter Phone Number" class="form-control">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6 ml-20 wid-45">
+            <label for="state">State</label>
+            <input type="text" name="state" id="state" placeholder="Enter State" class="form-control">
+          </div>
+          <div class="col-md-6 ml-30 wid-45">
+            <label for="city">City</label>
+            <input type="text" name="city" id="city" placeholder="Enter City" class="form-control">
+          </div>
+        </div>
+      <label for="address">Address</label>
+      <div class="form-group  md-20">
+        <textarea id="address" name="address"  placeholder="Enter your Address" class="form-control"></textarea >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building-add form-icon" viewBox="0 0 16 16">
+            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0"/>
+            <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
+            <path d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+          </svg>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-6 ml-20 wid-45">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" placeholder="Enter Password" class="form-control">
+        </div>
+        <div class="col-md-6 ml-30 wid-45" >
+          <label for="zip_code">Zip Code</label>
+          <input type="text" name="zip_code" id="zip_code" placeholder="Enter Zip Code" class="form-control">
+        </div>
+         <label for="license" class="form-label-1">license</label>
+        <input type="file" class="form-control" id="license" name="license">
+      </div>
+      <div>
+        <input type="submit" value="Register" class="btn-1 btn-1-primary mt-30 md-20 wid-100" >
+      </div>
+    </form>
+    </div>
+  </div>
+  </div>
+</div>

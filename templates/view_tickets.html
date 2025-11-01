@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Tickets</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .header h1 {
+      color: #1a202c;
+      margin: 0;
+    }
+    
+    .ticket-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .ticket-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    
+    .ticket-card:hover {
+      transform: translateY(-4px);
+    }
+    
+    .ticket-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid #edf2f7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .ticket-status {
+      background: #ebf8ff;
+      color: #3182ce;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .ticket-status.confirmed {
+      background: #e6fffa;
+      color: #38b2ac;
+    }
+    
+    .ticket-status.cancelled {
+      background: #fed7d7;
+      color: #e53e3e;
+    }
+    
+    .ticket-body {
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    .journey-details {
+      text-align: center;
+    }
+    
+    .journey-line {
+      position: relative;
+      height: 2px;
+      background-color: #e2e8f0;
+      margin: 0 1rem;
+    }
+    
+    .journey-line::before,
+    .journey-line::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #4a5568;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .journey-line::before {
+      left: -4px;
+    }
+    
+    .journey-line::after {
+      right: -4px;
+    }
+    
+    .station {
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 0.25rem;
+    }
+    
+    .time {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1a202c;
+      margin-bottom: 0.25rem;
+    }
+    
+    .date {
+      color: #718096;
+      font-size: 0.875rem;
+    }
+    
+    .ticket-footer {
+      padding: 1rem 1.5rem;
+      background-color: #f9fafb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .price {
+      font-weight: 700;
+      color: #2d3748;
+      font-size: 1.125rem;
+    }
+    
+    .view-btn {
+      background-color: #4a5568;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+    
+    .view-btn:hover {
+      background-color: #2d3748;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .empty-state h2 {
+      color: #2d3748;
+      margin-bottom: 1rem;
+    }
+    
+    .empty-state p {
+      color: #718096;
+      margin-bottom: 2rem;
+    }
+    
+    .book-now-btn {
+      background-color: #4a5568;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+    
+    .book-now-btn:hover {
+      background-color: #2d3748;
+    }
+    
+    .passenger-info {
+      background-color: #f8fafc;
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border-left: 3px solid #4a5568;
+    }
+    
+    .passenger-name {
+      font-weight: 600;
+      color: #1a202c;
+    }
+    
+    .passenger-details {
+      color: #64748b;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+    
+    .seat-badge {
+      display: inline-block;
+      background-color: #e2e8f0;
+      color: #4a5568;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-right: 0.5rem;
+    }
+    
+    .individual-tickets {
+      margin-top: 1rem;
+      border-top: 1px dashed #e2e8f0;
+      padding-top: 1rem;
+    }
+    
+    .individual-ticket {
+      background-color: #f8fafc;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      border-left: 3px solid #4a5568;
+    }
+    
+    .individual-ticket:last-child {
+      margin-bottom: 0;
+    }
+    
+    .ticket-label {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-bottom: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  {% include 'phead.html' %}
+  
+  <div class="container">
+    <div class="header">
+      <h1>My Tickets</h1>
+    </div>
+    
+    {% if bookings and bookings|length > 0 %}
+      <div class="ticket-list">
+        {% for booking in bookings %}
+          <div class="ticket-card">
+            <div class="ticket-header">
+              <h3>Booking #{{ booking._id }}</h3>
+              <span class="ticket-status {{ booking.status|lower }}">{{ booking.status }}</span>
+            </div>
+            
+            <div class="ticket-body">
+              <div class="departure">
+                <div class="station">{{ booking.departure_station_name }}</div>
+                <div class="time">{{ booking.departure_time_fmt }}</div>
+                <div class="date">{{ booking.departure_day }}</div>
+                <div class="platform">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#6b7280" class="bi bi-geo-alt" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 4px;">
+                    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                  </svg>
+                  Platform {{ booking.schedule.departure_platform }}
+                </div>
+              </div>
+              
+              <div class="journey-details">
+                <div class="journey-line"></div>
+                <div class="duration">{{ booking.duration }}</div>
+              </div>
+              
+              <div class="arrival">
+                <div class="station">{{ booking.arrival_station_name }}</div>
+                <div class="time">{{ booking.arrival_time_fmt }}</div>
+                <div class="date">{{ booking.arrival_day }}</div>
+                <div class="platform">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#6b7280" class="bi bi-geo-alt" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 4px;">
+                    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                  </svg>
+                  Platform {{ booking.schedule.arrival_platform }}
+                </div>
+              </div>
+            </div>
+            
+            <!-- Display individual tickets if passenger_details exists -->
+            {% if booking.passenger_details and booking.passenger_details|length > 0 %}
+              <div class="individual-tickets">
+                {% for passenger in booking.passenger_details %}
+                  <div class="individual-ticket">
+                    <div class="passenger-name">{{ passenger.name }} <span class="seat-badge">Seat {{ passenger.seat }}</span></div>
+                    <div class="passenger-details">{{ passenger.age }} years • {{ passenger.gender }}</div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <!-- Display seats if no passenger details -->
+              <div class="passenger-info">
+                <div class="ticket-label">Selected Seats</div>
+                <div>
+                  {% for seat in booking.seats %}
+                    <span class="seat-badge">{{ seat }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+            
+            <div class="ticket-footer">
+              <div class="price">${{ booking.total_price }}</div>
+              <a href="/view_ticket/{{ booking._id }}" class="view-btn">View Ticket</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <h2>No tickets found</h2>
+        <p>You haven't booked any tickets yet. Start your journey by booking a ticket now!</p>
+        <a href="/search_bus" class="book-now-btn">Book a Ticket</a>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

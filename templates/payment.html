@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+{% include 'phead.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #f9fafb;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --error: #ef4444;
+            --success: #10b981;
+            --border: #e5e7eb;
+            --radius: 8px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f3f4f6;
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .payment-box {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .payment-title {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .payment-title h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .payment-options {
+            padding: 2rem;
+        }
+        
+        .field-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .field-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+        
+        .input-box {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .input-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+        
+        .input-box:disabled {
+            background-color: #f9fafb;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+        
+        .font-bold {
+            font-weight: 600;
+        }
+        
+        select.input-box {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+            padding-right: 2.5rem;
+        }
+        
+        .row-field {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .btn-container {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .pay-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+        
+        .pay-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        
+        .card-number {
+            letter-spacing: 1px;
+            font-family: monospace;
+        }
+        
+        .card-holder {
+            text-transform: uppercase;
+        }
+        
+       
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .payment-options {
+                padding: 1.5rem;
+            }
+            
+            .row-field {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+        
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .payment-box {
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        
+        .order-summary {
+            background-color: #f9fafb;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .summary-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+        
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--border);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+       
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+        
+        .security-badge svg {
+            width: 1rem;
+            height: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="margin-top: 70px;">
+        <div class="payment-box">
+            <div class="payment-title">
+                <h3>Payment Details</h3>
+            </div>
+            <div class="payment-options">
+                <form action="/payment_page_action" method="post">
+                    <input type="hidden" name="bus_id" value="{{bus_id}}">
+                    <input type="hidden" name="schedule_id" value="{{ schedule_id }}">
+                    <input type="hidden" name="seats" value="{{seats}}">
+                    <input type="hidden" name="total_price" value="{{total_price}}">
+
+                    <div class="order-summary">
+                        <div class="summary-title">Order Summary</div>
+                        <div class="summary-item">
+                            <span>Ticket Price</span>
+                            <span>${{total_price}}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Service Fee</span>
+                            <span>$0.00</span>
+                        </div>
+                        <div class="summary-total">
+                            <span>Total</span>
+                            <span>${{total_price}}</span>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="total_price" class="field-label">Amount</label>
+                        <input name="total_price" id="total_price" class="input-box font-bold" value="${{total_price}}" disabled>
+                    </div>
+
+               
+
+                    <div class="field-group">
+                        <label class="field-label">Payment Method</label>
+                        <select name="payment_method" class="input-box" required>
+                            <option value="" disabled selected>Select Payment Method</option>
+                            <option value="Debit Card">Debit Card</option>
+                            <option value="Credit Card">Credit Card</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="card_holder_name" class="field-label">Card Holder Name</label>
+                        <input type="text" name="card_holder_name" class="input-box card-holder" id="card_holder_name" placeholder="Enter Card Holder Name" maxlength="26" required>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="card_number" class="field-label">Card Number</label>
+                        <input type="text" name="card_number" class="input-box card-number" id="card_number" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" required>
+                    </div>
+
+                    <script>
+                        const cardInput = document.getElementById('card_number');
+
+                        cardInput.addEventListener('input', function (e) {
+                            let value = e.target.value.replace(/\D/g, '');
+                            value = value.substring(0, 16);
+                            let formatted = value.replace(/(.{4})/g, '$1 ').trim();
+                            e.target.value = formatted;
+                        });
+                    </script>
+
+                    <div class="field-group row-field">
+                        <div>
+                            <label for="expiry_date" class="field-label">Expiry Date</label>
+                            <input type="month" name="expiry_date" class="input-box" id="expiry_date" required>
+                        </div>
+                        <div>
+                            <label for="cvv" class="field-label">CVV</label>
+                            <input type="text" name="cvv" class="input-box" id="cvv" placeholder="CVV" maxlength="3" pattern="\d{3}" required>
+                        </div>
+                    </div>
+
+                    <div class="btn-container">
+                        <button type="submit" class="pay-btn">Pay Now</button>
+                    </div>
+                    
+            
+                    <div class="security-badge">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        <span>Secure Payment Processing</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

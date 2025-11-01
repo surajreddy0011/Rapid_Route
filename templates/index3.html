@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solar Power | Enlighten</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      width: 100%;
+    }
+
+    .hero {
+      background-image: url("../static/photos/ChatGPT\ Image\ Apr\ 22\,\ 2025\,\ 03_42_18\ PM.png ");
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .navbar nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+    }
+
+    .navbar .quote-btn {
+      padding: 10px 20px;
+      border: 1px solid white;
+      border-radius: 4px;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+    }
+
+    .hero-content {
+      text-align: center;
+      padding-bottom: 280px;
+    }
+
+    .hero-content h1 {
+      font-size: 72px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .hero-content h1 span {
+      display: inline-block;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      opacity: 0;
+    }
+
+    .hero-content h1 .solar {
+      animation: slideInLeft 1.5s forwards;
+    }
+
+    .hero-content h1 .power {
+      animation: slideInRight 1.5s forwards;
+    }
+
+    @keyframes slideInLeft {
+      from {
+        transform: translateX(-100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .hero-content p {
+      font-size: 18px;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-content .cta-btn {
+      padding: 15px 30px;
+      font-size: 16px;
+      background: #3f6dfe;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="navbar">
+      <div class="logo">En<span style="color:#a3bffa">lighten</span></div>
+      <nav>
+        <a href="#">Service</a>
+        <a href="#">Projects</a>
+        <a href="#">Contact Us</a>
+      </nav>
+      <button class="quote-btn">Get a Quote</button>
+    </div>
+
+    <div class="hero-content">
+      <h1>
+        <span class="solar">SOLAR</span>
+        <span class="power">POWER</span>
+      </h1>
+      <p>Solar power is an environmentally friendly future energy and can save your electricity consumption. Switch to solar power immediately!</p>
+      <button class="cta-btn">Discover More</button>
+    </div>
+  </section>
+</body>
+</html>

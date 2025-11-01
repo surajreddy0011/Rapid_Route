@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmation</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .header h1 {
+      color: #2d3748;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      color: #4a5568;
+      font-size: 1.1rem;
+    }
+    
+    .success-icon {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    
+    .success-icon svg {
+      width: 80px;
+      height: 80px;
+      color: #48bb78;
+    }
+    
+    .booking-summary {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .summary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e2e8f0;
+      margin-bottom: 15px;
+    }
+    
+    .summary-header h2 {
+      color: #2d3748;
+      margin: 0;
+      font-size: 1.3rem;
+    }
+    
+    .booking-id {
+      color: #4a5568;
+      font-size: 0.9rem;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    
+    .summary-label {
+      color: #718096;
+      font-size: 0.95rem;
+    }
+    
+    .summary-value {
+      color: #2d3748;
+      font-weight: 500;
+    }
+    
+    .ticket-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    
+    .ticket-header {
+      background-color: #4f46e5;
+      color: white;
+      padding: 15px;
+      font-weight: 600;
+    }
+    
+    .ticket-body {
+      padding: 20px;
+    }
+    
+    .ticket-row {
+      display: flex;
+      margin-bottom: 12px;
+    }
+    
+    .ticket-label {
+      width: 120px;
+      color: #718096;
+      font-size: 0.9rem;
+    }
+    
+    .ticket-value {
+      flex: 1;
+      color: #2d3748;
+      font-weight: 500;
+    }
+    
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .btn-primary {
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+    }
+    
+    .btn-primary:hover {
+      background-color: #4338ca;
+    }
+    
+    .btn-outline {
+      background-color: white;
+      color: #4f46e5;
+      border: 1px solid #4f46e5;
+    }
+    
+    .btn-outline:hover {
+      background-color: #f9fafb;
+    }
+  </style>
+</head>
+<body>
+  {% include 'phead.html' %}
+  
+  <div class="container">
+    <div class="header">
+      <div class="success-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <h1>Booking Confirmed!</h1>
+      <p>Your tickets have been booked successfully.</p>
+    </div>
+    
+    <div class="booking-summary">
+      <div class="summary-header">
+        <h2>Booking Summary</h2>
+        <div class="booking-id">Booking ID: {{ booking_id }}</div>
+      </div>
+      
+      <div class="summary-row">
+        <div class="summary-label">Total Amount Paid</div>
+        <div class="summary-value">${{ total_price }}</div>
+      </div>
+      
+      <div class="summary-row">
+        <div class="summary-label">Number of Tickets</div>
+        <div class="summary-value">{{ e_tickets|length }}</div>
+      </div>
+      
+      <div class="summary-row">
+        <div class="summary-label">Booking Date</div>
+        <div class="summary-value">{{ e_tickets[0].issue_date.strftime('%B %d, %Y') if e_tickets and e_tickets[0].issue_date else 'N/A' }}</div>
+      </div>
+    </div>
+    
+    <h2 style="color: #2d3748; margin-bottom: 20px;">Your Tickets</h2>
+    
+    {% for ticket in e_tickets %}
+    <div class="ticket-card">
+      <div class="ticket-header">
+        E-Ticket for Seat {{ ticket.seat_number }}
+      </div>
+      <div class="ticket-body">
+        <div class="ticket-row">
+          <div class="ticket-label">Passenger</div>
+          <div class="ticket-value">{{ ticket.passenger_name }}</div>
+        </div>
+        <div class="ticket-row">
+          <div class="ticket-label">Age</div>
+          <div class="ticket-value">{{ ticket.passenger_age }}</div>
+        </div>
+        <div class="ticket-row">
+          <div class="ticket-label">Gender</div>
+          <div class="ticket-value">{{ ticket.passenger_gender }}</div>
+        </div>
+        <div class="ticket-row">
+          <div class="ticket-label">Seat Number</div>
+          <div class="ticket-value">{{ ticket.seat_number }}</div>
+        </div>
+        <div class="ticket-row">
+          <div class="ticket-label">Ticket ID</div>
+          <div class="ticket-value">{{ ticket.ticket_id }}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    
+    <div class="actions">
+      <a href="/view_tickets" class="btn btn-primary">View My Tickets</a>
+      <a href="/search_bus" class="btn btn-outline">Book Another Ticket</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,392 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  {% include 'ahead.html' %}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Train Ticket Information</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f9fafb;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 1.875rem;
+      font-weight: bold;
+      color: #1f2937;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Pacifico', cursive;
+      color: #4f46e5;
+      margin-right: 0.5rem;
+    }
+
+    .form-container,
+    .display-container {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      color: #1f2937;
+      margin-bottom: 1.5rem;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.875rem;
+      color: #374151;
+      margin-bottom: 0.5rem;
+    }
+
+    .input-icon-wrapper {
+      position: relative;
+    }
+
+    .input-icon-wrapper i {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6b7280;
+    }
+
+    input, select {
+      padding: 0.625rem 0.75rem 0.625rem 2.5rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #f3f4f6;
+      font-size: 0.875rem;
+    }
+
+    select {
+      appearance: none;
+      background-image: url('data:image/svg+xml,<svg fill="gray" viewBox="0 0 20 20"><path d="M5 7l5 5 5-5"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 1rem;
+    }
+
+    .buttons {
+      grid-column: span 2;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.875rem;
+      cursor: not-allowed;
+    }
+
+    .btn-submit {
+      background-color: #4f46e5;
+      color: #fff;
+    }
+
+    .btn-reset {
+      background-color: #e5e7eb;
+      color: #374151;
+    }
+
+    /* Display container */
+    .display-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background-color: #d1d5db;
+      color: #374151;
+    }
+
+    .display-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-bottom: 0.5rem;
+    }
+
+    .display-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .display-item i {
+      color: #4f46e5;
+      font-size: 1.25rem;
+      width: 2rem;
+    }
+
+    .display-item p {
+      margin: 0;
+    }
+
+    .display-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .ticket-footer {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .edit-btn {
+      background-color: #f3f4f6;
+      color: #374151;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .selected-bus-info {
+      background-color: #f3f4f6;
+      border-radius: 8px;
+      padding: 0.625rem 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .bus-display {
+      display: flex;
+      align-items: center;
+    }
+
+    .bus-display i {
+      color: #6b7280;
+      margin-right: 0.75rem;
+    }
+
+    .bus-display span {
+      font-size: 0.875rem;
+      color: #374151;
+    }
+
+    @media (max-width: 768px) {
+      form,
+      .display-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Schedule Management</h1>
+      <div class="date">{{ current_date }}</div>
+    </header>
+
+    <div class="form-container">
+      <h2>Schedule Information Form</h2>
+      <form action="add_schedules_action" method="post">
+        <!-- Bus ID field -->
+        <div class="form-group">
+          <label for="bus_id">Bus</label>
+          <div class="input-icon-wrapper">
+            <i class="ri-bus-line"></i>
+            <select id="bus_id" name="bus_id" {% if bus_id %}value="{{ bus_id }}"{% endif %}>
+              <option value="">Select bus (optional)</option>
+              {% for bus in buses %}
+              <option value="{{ bus._id }}" {% if bus_id and bus._id|string == bus_id|string %}selected{% endif %}>
+                {{ bus.bus_name }} ({{ bus.bus_number }})
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <!-- Driver ID field -->
+        <div class="form-group">
+          <label for="driver_id">Driver</label>
+          <div class="input-icon-wrapper">
+            <i class="ri-user-line"></i>
+            <select id="driver_id" name="driver_id" required style="width:100%">
+              <option value="">Select driver</option>
+              {% for driver in drivers %}
+              <option value="{{driver['_id']}}">{{driver['name']}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <!-- Departure Station field -->
+        <div class="form-group">
+          <label for="departure_station">Departure Station</label>
+          <select name="departure_station" id="departure_station" required style="width:100%">
+            <option value="">Select Departure</option>
+            {% for station in stations %}
+            <option value="{{ station._id }}">{{ station.station_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Arrival Station field -->
+        <div class="form-group">
+          <label for="arrival_station">Arrival Station</label>
+          <select name="arrival_station" id="arrival_station" required style="width:100%">
+            <option value="">Select Arrival</option>
+            {% for station in stations %}
+            <option value="{{ station._id }}">{{ station.station_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="departure_platform">Departure Platform</label>
+          <div class="input-icon-wrapper">
+            <i class=""></i>
+            <input type="number" id="departure_platform" name="departure_platform" min="1" required style="width:100%">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="arrival_platform">Arrival Platform</label>
+          <div class="input-icon-wrapper">
+            <i class=""></i>
+            <input type="number" id="arrival_platform" name="arrival_platform" min="1" required style="width:100%">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="departure_time">Departure Time</label>
+          <div class="input-icon-wrapper">
+            <i class="ri-time-line"></i>
+            <input type="datetime-local" id="departure_time" name="departure_time" required style="width:100%" 
+                   pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}T[0-9]{2}:[0-9]{2}">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="arrival_time">Arrival Time</label>
+          <div class="input-icon-wrapper">
+            <i class="ri-time-line"></i>
+            <input type="datetime-local" id="arrival_time" name="arrival_time" required style="width:100%"
+                   pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}T[0-9]{2}:[0-9]{2}">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="ticket_price">Ticket Price</label>
+          <div class="input-icon-wrapper">
+            <i class="ri-money-dollar-circle-line"></i>
+            <input type="number" id="ticket_price" name="ticket_price" min="0" step="0.01" required style="width:100%">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status</label>
+          <div class="input-icon-wrapper">
+            <i class="ri-information-line"></i>
+            <select id="status" required style="width:100%" name="status">
+              <option value="Scheduled">Scheduled</option>
+              <option value="Pending">Pending</option>
+              <option value="Cancelled">Cancelled</option>
+              <option value="Delayed">Delayed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <input type="submit" class="btn btn-submit" value="ADD SCHEDULE">
+        </div>
+      </form>
+    </div>
+
+
+  </div>
+  <script>
+    // Add this script at the end of the body
+    document.addEventListener('DOMContentLoaded', function() {
+      // Format date inputs to MM-DD-YYYY
+      const dateInputs = document.querySelectorAll('input[type="date"], input[type="datetime-local"]');
+      
+      dateInputs.forEach(input => {
+        input.addEventListener('change', function() {
+          const date = new Date(this.value);
+          if (!isNaN(date.getTime())) {
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const year = date.getFullYear();
+            
+            if (this.type === 'date') {
+              // For date inputs
+              const formattedDate = `${month}-${day}-${year}`;
+              this.setAttribute('data-formatted-date', formattedDate);
+            } else if (this.type === 'datetime-local') {
+              // For datetime-local inputs
+              const hours = String(date.getHours()).padStart(2, '0');
+              const minutes = String(date.getMinutes()).padStart(2, '0');
+              const formattedDateTime = `${month}-${day}-${year}T${hours}:${minutes}`;
+              this.setAttribute('data-formatted-date', formattedDateTime);
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

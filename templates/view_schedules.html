@@ -1,0 +1,328 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en">
+  <head>
+
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bus Ticket Details</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f9fafb;
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+      }
+      .journey-line-horizontal {
+        height: 2px;
+        width: 80px; 
+        background-color: #4f46e5;
+        margin: 8px 0;
+        border-radius: 4px;
+      }
+
+
+
+      .container-1 {
+        max-width: 768px;
+        width: 100%;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+        color: #1f2937;
+        margin-bottom: 8px;
+      }
+
+      .header p {
+        color: #6b7280;
+      }
+      .ml-20{ margin-left: 20px;}
+      .mt-40{ margin-top: 40px;}
+      .mt-80{ margin-top: 80px;}
+      .mt-5{ margin-top: 5px;}
+      .mb-60{ margin-bottom: 60px;}
+
+      .ticket-card {
+        background-color: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 32px;
+        overflow: hidden;
+        transition: transform 0.2s ease-in-out;
+      }
+
+      .ticket-card:hover {
+        transform: translateY(-4px);
+      }
+
+      .ticket-header, .ticket-footer, .ticket-section {
+        padding: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .ticket-section {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .section-title {
+        font-size: 12px;
+        color: #6b7280;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .station-name {
+        font-size: 20px;
+        font-weight: bold;
+        color: #1f2937;
+      }
+
+      .platform {
+        color: #6b7280;
+        margin-top: 4px;
+      }
+
+      .time-block {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .time {
+        font-size: 20px;
+        font-weight: bold;
+        color: #1f2937;
+      }
+
+      .date {
+        font-size: 12px;
+        color: #6b7280;
+      }
+
+      .journey-arrow {
+        text-align: center;
+        margin: 24px 0;
+      }
+
+      .duration, .badge {
+        font-size: 12px;
+        color: #4f46e5;
+        font-weight: 500;
+        background-color: rgba(79, 70, 229, 0.1);
+        padding: 4px 8px;
+        border-radius: 12px;
+        display: inline-block;
+        margin-top: 8px;
+      }
+
+      .footer-left {
+        color: #6b7280;
+      }
+
+      .price {
+        font-size: 20px;
+        font-weight: bold;
+        color: #1f2937;
+      }
+
+      .actions button {
+        padding: 8px 16px;
+        font-weight: 500;
+        border-radius: 8px;
+        cursor: pointer;
+        border: none;
+        margin-left: 8px;
+      }
+
+      .btn-download {
+        background-color: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #374151;
+      }
+
+      .btn-qr {
+        background-color: #4f46e5;
+        color: white;
+      }
+
+     
+      .small-ticket {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        margin-bottom: 24px;
+      }
+
+      .small-ticket-header, .small-ticket-footer, .small-ticket-section {
+        padding: 16px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .small-ticket-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f3f4f6;
+      }
+
+      .small-ticket-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .ticket-info {
+        flex: 1 1 100%;
+      }
+
+      .ticket-info-half {
+        flex: 1 1 45%;
+      }
+
+      .ticket-info-title {
+        font-size: 12px;
+        color: #6b7280;
+        font-weight: 600;
+      }
+
+      .ticket-info-value {
+        font-weight: bold;
+        color: #1f2937;
+      }
+
+      .btn {
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      .btn-outline {
+        background-color: white;
+        border: 1px solid #d1d5db;
+        color: #374151;
+      }
+
+      .btn-primary {
+        background-color: #4f46e5;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-1">
+      <div class="header">
+        <h1>Bus Schedule Details</h1>
+
+      </div>
+        {% for schedule in schedules %}
+        {% set buses = get_bus_name_by_bus_id(schedule['bus_id']) if 'bus_id' in schedule else None %}
+
+
+      <div class="ticket-card">
+
+        <div class="ticket-header">
+          <div>
+            <strong>{{ buses['bus_name'] if buses else 'No Bus Assigned' }}</strong><br />
+            <small>{{ buses['bus_number'] if buses else 'N/A' }}</small>
+          </div>
+          <div style="color: #16a34a; font-weight: 600">{{ schedule.status if 'status' in schedule else 'On Time' }}</div>
+        </div>
+
+        <div class="ticket-section" style="flex-direction: row; justify-content: space-between; align-items: center;">
+
+  <div>
+    <div class="section-title">DEPARTURE</div>
+    {% set departure_station = get_station_name_by_station_id(schedule['departure_station']) %}
+    <div class="station-name">{{ departure_station.station_name }}</div>
+    <div class="platform ">
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#6b7280" class="bi bi-geo-alt" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 4px;">
+    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+  </svg>
+  {{schedule['departure_platform']}}
+</div>
+
+    <div class="time-block">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#6b7280" class="bi bi-clock mt-40" viewBox="0 0 16 16">
+    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+  </svg>
+  <div>
+    <div class="time mt-40">{{ schedule.departure_time_fmt }}</div>
+    <div class="date">{{ schedule.departure_day }}</div>
+  </div>
+</div>
+
+  </div>
+
+
+<div class="journey-arrow" style="display: flex; flex-direction: column; align-items: center;">
+  
+  <div class="journey-line-horizontal mb-60" style="width: 100%;"></div>
+  <div class="duration mt-5">{{ schedule.duration }}</div>
+</div>
+
+
+
+
+  <div>
+    <div class="section-title">ARRIVAL</div>
+    {% set arrival_station = get_station_name_by_station_id(schedule['arrival_station']) %}
+    <div class="station-name">{{ arrival_station.station_name }}</div>
+    <div class="platform ">
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#6b7280" class="bi bi-geo-alt" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 4px;">
+    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+  </svg>
+  {{schedule['arrival_platform']}}
+</div>
+
+    <div class="time-block">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#6b7280" class="bi bi-clock mt-40" viewBox="0 0 16 16">
+    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+  </svg>
+  <div>
+    <div class="time mt-40">{{ schedule.arrival_time_fmt }}</div>
+    <div class="date">{{ schedule.arrival_day }}</div>
+  </div>
+</div>
+
+  </div>
+</div>
+
+
+        <div class="ticket-footer">
+          <div class="footer-left">
+            <div class="price">${{schedule['ticket_price']}}</div>
+            <div class="date">Standard Class</div>
+          </div>
+
+        </div>
+      </div>
+        {% endfor %}
+
+
+    </div>
+  </body>
+</html>

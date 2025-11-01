@@ -1,0 +1,87 @@
+{% include 'links.html'%}
+
+<style>
+    .highlighted-word {
+        position: relative;
+        display: inline-block;
+        z-index: 1;
+    }
+
+    .highlighted-word::before {
+        content: "";
+        position: absolute;
+        bottom: 0.1em;
+        left: -0.05em;
+        width: 105%;
+        height: 0.35em;
+        background: #fde0b4;
+        border-radius: 6px;
+        opacity: 0.5;
+        transform: rotate(-1deg);
+        z-index: -2;
+    }
+
+    .highlighted-word::after {
+        content: "";
+        position: absolute;
+        bottom: 0.05em;
+        left: 0;
+        width: 100%;
+        height: 0.25em;
+        background: linear-gradient(to right, #fbb17a, #f57c4b);
+        border-radius: 4px;
+        opacity: 0.85;
+        transform: rotate(-2deg);
+        z-index: -1;
+    }
+
+    .hero {
+        position: relative;
+        z-index: 1;
+    }
+
+    .yellow-blob {
+        position: absolute;
+        right: 80px;
+        top: 100px;
+        width: 400px;
+        height: 400px;
+        background: #fde0b4;
+        border-radius: 50% 40% 60% 50%;
+        filter: blur(60px);
+        opacity: 0.6;
+        z-index: 0;
+    }
+</style>
+
+
+
+
+
+<div class="bg">
+
+    <nav class=" nav-1 nav-links">
+        <a href="/" class="nav-links a">HOME</a>
+        <a href="/admin" class="nav-links a">ADMIN</a>
+        <a href="/driver_login" class="nav-links a">DRIVER</a>
+        <a href="/passenger" class="nav-links a">CUSTOMER</a>
+        <a href="/view_schedules" class="nav-links a">SCHEDULES</a>
+    </nav>
+</div>
+
+<body class="bk-home bk-5" >
+    
+
+    <div class="font-25 ml-50 wid-600 font-light t-orange ">
+        <p  class="mt-100">TRAVEL WITH BUS  AROUND THE INDIA</p>
+    </div>
+    <section class="">
+       
+
+        <div class="text-wh wid-700 t-bla ml-50 fon-we   font-40"style="font-size:70px ">
+            Travel, <span class="highlighted-word ">enjoy</span> and live a new and full life.
+        </div>
+
+    </section>
+</body>
+

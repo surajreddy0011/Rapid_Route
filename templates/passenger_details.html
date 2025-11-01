@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passenger Details</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f1f3f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .container {
+      background-color: #fff;
+      width: 90%;
+      max-width: 800px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .header h1 {
+      margin-bottom: 5px;
+      color: #333;
+    }
+    
+    .header p {
+      color: #666;
+      margin: 5px 0;
+    }
+    
+    .passenger-form {
+      margin-bottom: 30px;
+    }
+    
+    .form-title {
+      background-color: #f8f9fa;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-weight: 600;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .seat-number {
+      background-color: #e9ecef;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .form-row .form-group {
+      flex: 1;
+    }
+    
+    .footer {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .summary {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #388e3c;
+    }
+    
+    @media (max-width: 600px) {
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Passenger Details</h1>
+      <p>{{ bus.bus_name }} ({{ bus.bus_number }})</p>
+      <p>{{ schedule.departure_station_name }} to {{ schedule.arrival_station_name }}</p>
+      <p>{{ schedule.departure_day }} at {{ schedule.departure_time_fmt }}</p>
+    </div>
+    
+    <form action="/save_passenger_details" method="post">
+      <input type="hidden" name="bus_id" value="{{ bus_id }}">
+      <input type="hidden" name="schedule_id" value="{{ schedule_id }}">
+      <input type="hidden" name="selected_seats" value="{{ selected_seats }}">
+      <input type="hidden" name="total_price" value="{{ total_price }}">
+      
+      {% for seat in seats %}
+      <div class="passenger-form">
+        <div class="form-title">
+          <span>Passenger Details</span>
+          <span class="seat-number">Seat {{ seat }}</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="name_{{ seat }}">Full Name</label>
+          <input type="text" id="name_{{ seat }}" name="name_{{ seat }}" placeholder="Enter passenger's full name" required>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="age_{{ seat }}">Age</label>
+            <input type="number" id="age_{{ seat }}" name="age_{{ seat }}" min="1" max="120" placeholder="Age" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="gender_{{ seat }}">Gender</label>
+            <select id="gender_{{ seat }}" name="gender_{{ seat }}" required>
+              <option value="">Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      
+      <div class="footer">
+        <div class="summary">
+          <div>Total: ${{ total_price }}</div>
+        </div>
+        <button type="submit">Continue to Payment</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

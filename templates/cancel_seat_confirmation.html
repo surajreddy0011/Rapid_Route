@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cancel Seat</title>
+  <style>
+    /* Reuse styles from cancel_confirmation.html */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    .header h1 {
+      color: #2d3748;
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    
+    .back-btn {
+      display: flex;
+      align-items: center;
+      color: #4a5568;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    
+    .back-btn svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+    
+    .confirmation-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+    
+    .card-header {
+      background-color: #f8fafc;
+      padding: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .card-header h2 {
+      margin: 0;
+      color: #2d3748;
+      font-size: 1.4rem;
+    }
+    
+    .card-body {
+      padding: 30px;
+    }
+    
+    .warning-text {
+      display: flex;
+      align-items: center;
+      color: #e53e3e;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    
+    .warning-text svg {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+      stroke: #e53e3e;
+    }
+    
+    .info-text {
+      color: #4a5568;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    
+    .ticket-summary {
+      background-color: #f8fafc;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .journey-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .station-info {
+      flex: 1;
+    }
+    
+    .station-info h3 {
+      color: #718096;
+      font-size: 0.9rem;
+      margin: 0 0 10px 0;
+      text-transform: uppercase;
+    }
+    
+    .time {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 5px;
+    }
+    
+    .date {
+      color: #718096;
+      margin-bottom: 10px;
+    }
+    
+    .station {
+      font-weight: 600;
+      color: #2d3748;
+    }
+    
+    .detail-row {
+      display: flex;
+      margin-bottom: 15px;
+    }
+    
+    .detail-label {
+      width: 120px;
+      color: #718096;
+      font-size: 0.9rem;
+    }
+    
+    .detail-value {
+      flex: 1;
+      color: #2d3748;
+      font-weight: 500;
+    }
+    
+    .refund-info {
+      margin-bottom: 30px;
+    }
+    
+    .refund-info h3 {
+      color: #2d3748;
+      font-size: 1.1rem;
+      margin: 0 0 15px 0;
+    }
+    
+    .refund-info p {
+      color: #4a5568;
+      margin: 0 0 10px 0;
+      line-height: 1.6;
+    }
+    
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      border: none;
+      font-size: 0.9rem;
+    }
+    
+    .btn-back {
+      background-color: #e2e8f0;
+      color: #4a5568;
+    }
+    
+    .btn-cancel {
+      background-color: #e53e3e;
+      color: white;
+    }
+    
+    .btn-back:hover {
+      background-color: #cbd5e0;
+    }
+    
+    .btn-cancel:hover {
+      background-color: #c53030;
+    }
+    
+    .seat-highlight {
+      background-color: #ebf8ff;
+      color: #2b6cb0;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Cancel Seat</h1>
+      <a href="/view_ticket/{{ booking._id }}" class="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Ticket
+      </a>
+    </div>
+    
+    <div class="confirmation-card">
+      <div class="card-header">
+        <h2>Seat Cancellation Confirmation</h2>
+      </div>
+      
+      <div class="card-body">
+        <div class="warning-text">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 1.061a1 1 0 01-1.061.938l-3.213 5.429a1 1 0 01-1.758 0l-3.213-5.429a1 1 0 011.061-1.938L10 13.134V12" />
+          </svg>
+          Are you sure you want to cancel seat <span class="seat-highlight">{{ seat }}</span>?
+        </div>
+        
+        <p class="info-text">Please note that once cancelled, this action cannot be undone. A refund will be processed according to our refund policy.</p>
+        
+        <div class="ticket-summary">
+          <div class="journey-info">
+            <div class="station-info">
+              <h3>From</h3>
+              <div class="time">{{ schedule.departure_time_fmt }}</div>
+              <div class="date">{{ schedule.departure_day }}</div>
+              <div class="station">{{ schedule.departure_station_name }}</div>
+            </div>
+            
+            <div class="station-info">
+              <h3>To</h3>
+              <div class="time">{{ schedule.arrival_time_fmt }}</div>
+              <div class="date">{{ schedule.arrival_day }}</div>
+              <div class="station">{{ schedule.arrival_station_name }}</div>
+            </div>
+          </div>
+          
+          <div class="detail-row">
+            <div class="detail-label">Booking ID</div>
+            <div class="detail-value">{{ booking._id }}</div>
+          </div>
+          
+          <div class="detail-row">
+            <div class="detail-label">Bus</div>
+            <div class="detail-value">{{ bus.bus_name }} ({{ bus.bus_number }})</div>
+          </div>
+          
+          <div class="detail-row">
+            <div class="detail-label">Passenger</div>
+            <div class="detail-value">{{ passenger.name }}</div>
+          </div>
+          
+          <div class="detail-row">
+            <div class="detail-label">Selected Seat</div>
+            <div class="detail-value"><span class="seat-highlight">{{ seat }}</span></div>
+          </div>
+
+          {% if booking.passenger_details %}
+            {% for passenger in booking.passenger_details %}
+              {% if passenger.seat == seat %}
+                <div class="detail-row">
+                  <div class="detail-label">Passenger Name</div>
+                  <div class="detail-value">{{ passenger.name }}</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-label">Age</div>
+                  <div class="detail-value">{{ passenger.age }}</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-label">Gender</div>
+                  <div class="detail-value">{{ passenger.gender }}</div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          
+          <div class="detail-row">
+            <div class="detail-label">Seat Price</div>
+            <div class="detail-value">${{ "%.2f"|format(booking.total_price|float / booking.seats|length) }}</div>
+          </div>
+        </div>
+        
+        <div class="refund-info">
+          <h3>Refund Information</h3>
+          <p>{{ refund_message }}</p>
+          {% if refund_percentage > 0 %}
+            <p>Refund amount: ${{ "%.2f"|format(refund_amount) }} ({{ refund_percentage }}% of seat price)</p>
+          {% endif %}
+        </div>
+        
+        <form action="/cancel_seat/{{ booking._id }}/{{ seat }}" method="post">
+          <div class="actions">
+            <a href="/view_ticket/{{ booking._id }}" class="btn btn-back">Go Back</a>
+            <button type="submit" class="btn btn-cancel">Confirm Cancellation</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

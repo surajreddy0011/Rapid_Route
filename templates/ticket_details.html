@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Details</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .header h1 {
+      color: #1a202c;
+      margin: 0;
+    }
+    
+    .back-btn {
+      color: #4a5568;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .ticket-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    
+    .ticket-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid #edf2f7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #4a5568;
+      color: white;
+    }
+    
+    .ticket-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+    
+    .ticket-status {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .ticket-body {
+      padding: 2rem;
+    }
+    
+    .journey-section {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .journey-details {
+      text-align: center;
+    }
+    
+    .journey-line {
+      position: relative;
+      height: 2px;
+      background-color: #e2e8f0;
+      margin: 0 1rem;
+    }
+    
+    .journey-line::before,
+    .journey-line::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #4a5568;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .journey-line::before {
+      left: -4px;
+    }
+    
+    .journey-line::after {
+      right: -4px;
+    }
+    
+    .station {
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 0.25rem;
+    }
+    
+    .time {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1a202c;
+      margin-bottom: 0.25rem;
+    }
+    
+    .date {
+      color: #718096;
+      font-size: 0.875rem;
+    }
+    
+    .details-section {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .detail-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .detail-label {
+      font-size: 0.875rem;
+      color: #718096;
+      margin-bottom: 0.25rem;
+    }
+    
+    .detail-value {
+      font-weight: 600;
+      color: #2d3748;
+    }
+    
+    .seats-section {
+      margin-bottom: 2rem;
+    }
+    
+    .seats-section h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #2d3748;
+    }
+    
+    .seat-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .seat-tag {
+      background-color: #edf2f7;
+      color: #4a5568;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      position: relative;
+      padding-right: 24px;
+    }
+    
+    .seat-cancel-link {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #e53e3e;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    
+    .seat-cancel-link:hover {
+      opacity: 1;
+    }
+    
+    .qr-section {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    
+    .qr-code {
+      width: 150px;
+      height: 150px;
+      background-color: #edf2f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+    }
+    
+    .ticket-footer {
+      padding: 1.5rem;
+      background-color: #f9fafb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #edf2f7;
+    }
+    
+    .price {
+      font-weight: 700;
+      color: #2d3748;
+      font-size: 1.25rem;
+    }
+    
+    .action-btn {
+      background-color: #4a5568;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+    
+    .action-btn:hover {
+      background-color: #2d3748;
+    }
+    
+    .action-btn.cancel {
+      background-color: #f56565;
+    }
+    
+    .action-btn.cancel:hover {
+      background-color: #e53e3e;
+    }
+    
+    .action-btn.download {
+      background-color: #38b2ac;
+    }
+    
+    .action-btn.download:hover {
+      background-color: #319795;
+    }
+    
+    .passenger-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    
+    .passenger-card {
+      background-color: #f8fafc;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid #4a5568;
+    }
+    
+    .passenger-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .cancel-seat-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: #e53e3e;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      background-color: #fff5f5;
+      transition: background-color 0.2s;
+    }
+    
+    .cancel-seat-btn:hover {
+      background-color: #fed7d7;
+    }
+    
+    .cancel-seat-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+    
+    .passenger-body {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.75rem;
+    }
+    
+    .passenger-detail {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .detail-label {
+      font-size: 0.75rem;
+      color: #718096;
+      margin-bottom: 0.25rem;
+    }
+    
+    .detail-value {
+      font-weight: 500;
+      color: #2d3748;
+    }
+  </style>
+</head>
+<body>
+  {% include 'phead.html' %}
+  
+  <div class="container">
+    <div class="header">
+      <h1>Ticket Details</h1>
+      <a href="/view_tickets" class="back-btn">← Back to My Tickets</a>
+    </div>
+    
+    <div class="ticket-card">
+      <div class="ticket-header">
+        <h2>Booking #{{ booking._id }}</h2>
+        <span class="ticket-status">{{ booking.status }}</span>
+      </div>
+      
+      <div class="ticket-body">
+        <div class="journey-section">
+          <div class="departure">
+            <div class="station">{{ schedule.departure_station_name }}</div>
+            <div class="time">{{ schedule.departure_time_fmt }}</div>
+            <div class="date">{{ schedule.departure_day }}</div>
+          </div>
+          
+          <div class="journey-details">
+            <div class="journey-line"></div>
+            <div class="duration">{{ schedule.duration }}</div>
+          </div>
+          
+          <div class="arrival">
+            <div class="station">{{ schedule.arrival_station_name }}</div>
+            <div class="time">{{ schedule.arrival_time_fmt }}</div>
+            <div class="date">{{ schedule.arrival_day }}</div>
+          </div>
+        </div>
+        
+        <div class="details-section">
+          <div>
+            <div class="detail-group">
+              <div class="detail-label">Passenger Name</div>
+              <div class="detail-value">{{ passenger.name }}</div>
+            </div>
+            
+            <div class="detail-group">
+              <div class="detail-label">Passenger Email</div>
+              <div class="detail-value">{{ passenger.email }}</div>
+            </div>
+            
+            <div class="detail-group">
+              <div class="detail-label">Passenger Phone</div>
+              <div class="detail-value">{{ passenger.phone }}</div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="detail-group">
+              <div class="detail-label">Bus Name</div>
+              <div class="detail-value">{{ bus.bus_name }}</div>
+            </div>
+            
+            <div class="detail-group">
+              <div class="detail-label">Bus Number</div>
+              <div class="detail-value">{{ bus.bus_number }}</div>
+            </div>
+            
+            <div class="detail-group">
+              <div class="detail-label">Bus Type</div>
+              <div class="detail-value">{{ bus.bus_type }}</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="seats-section">
+          <h3>Passenger Details</h3>
+          {% if booking.passenger_details and booking.passenger_details|length > 0 %}
+            <div class="passenger-list">
+              {% for passenger in booking.passenger_details %}
+                <div class="passenger-card">
+                  <div class="passenger-header">
+                    <span class="seat-tag">Seat {{ passenger.seat }}</span>
+                    {% if booking.status == "Confirmed" %}
+                      <a href="/cancel_seat/{{ booking._id }}/{{ passenger.seat }}" class="cancel-seat-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="15" y1="9" x2="9" y2="15"></line>
+                          <line x1="9" y1="9" x2="15" y2="15"></line>
+                        </svg>
+                        Cancel Seat
+                      </a>
+                    {% endif %}
+                  </div>
+                  <div class="passenger-body">
+                    <div class="passenger-detail">
+                      <div class="detail-label">Name</div>
+                      <div class="detail-value">{{ passenger.name }}</div>
+                    </div>
+                    <div class="passenger-detail">
+                      <div class="detail-label">Age</div>
+                      <div class="detail-value">{{ passenger.age }}</div>
+                    </div>
+                    <div class="passenger-detail">
+                      <div class="detail-label">Gender</div>
+                      <div class="detail-value">{{ passenger.gender }}</div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="seat-list">
+              {% for seat in booking.seats %}
+                <span class="seat-tag">
+                  {{ seat }}
+                  {% if booking.status == "Confirmed" %}
+                    <a href="/cancel_seat/{{ booking._id }}/{{ seat }}" class="seat-cancel-link">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </a>
+                  {% endif %}
+                </span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        
+        <div class="qr-section">
+          <div class="qr-code">
+            <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="10" width="80" height="80" stroke="#4A5568" stroke-width="2"/>
+              <rect x="20" y="20" width="20" height="20" fill="#4A5568"/>
+              <rect x="60" y="20" width="20" height="20" fill="#4A5568"/>
+              <rect x="20" y="60" width="20" height="20" fill="#4A5568"/>
+              <rect x="40" y="40" width="20" height="20" fill="#4A5568"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <div class="ticket-footer">
+        <div class="price">Total: ${{ booking.total_price }}</div>
+        <div class="actions">
+          {% if booking.status == "Confirmed" %}
+            <a href="/cancel_ticket/{{ booking._id }}" class="action-btn cancel">Cancel Booking</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

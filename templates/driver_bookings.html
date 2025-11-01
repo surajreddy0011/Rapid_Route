@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passenger Bookings - Rapid Route</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+    }
+    
+    .sidebar {
+      background-color: #1e293b;
+      color: #e2e8f0;
+      height: 100vh;
+      position: fixed;
+      width: 250px;
+    }
+    
+    .sidebar-header {
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+    }
+    
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background-color: #4f46e5;
+      color: white;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-right: 10px;
+    }
+    
+    .logo-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .nav-list {
+      list-style: none;
+      padding: 1rem 0;
+      margin: 0;
+    }
+    
+    .nav-item {
+      margin-bottom: 0.25rem;
+    }
+    
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      color: #cbd5e1;
+      text-decoration: none;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+    
+    .nav-link:hover, .nav-link.active {
+      background-color: #334155;
+      color: white;
+      border-left-color: #4f46e5;
+    }
+    
+    .nav-link svg {
+      margin-right: 10px;
+    }
+    
+    .main-content {
+      margin-left: 250px;
+      padding: 2rem;
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+    }
+    
+    .booking-card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    
+    .booking-header {
+      padding: 1.25rem;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .booking-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+    }
+    
+    .booking-status {
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    
+    .status-confirmed {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+    
+    .status-cancelled {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+    
+    .booking-body {
+      padding: 1.25rem;
+    }
+    
+    .passenger-info {
+      display: flex;
+      margin-bottom: 1.5rem;
+    }
+    
+    .passenger-avatar {
+      width: 48px;
+      height: 48px;
+      background-color: #f1f5f9;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+    }
+    
+    .passenger-avatar svg {
+      color: #64748b;
+    }
+    
+    .passenger-details {
+      flex: 1;
+    }
+    
+    .passenger-name {
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 0.25rem;
+    }
+    
+    .passenger-contact {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+    
+    .journey-details {
+      background-color: #f8fafc;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .journey-row {
+      display: flex;
+      margin-bottom: 0.75rem;
+    }
+    
+    .journey-row:last-child {
+      margin-bottom: 0;
+    }
+    
+    .journey-label {
+      width: 120px;
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+    
+    .journey-value {
+      flex: 1;
+      font-weight: 500;
+      color: #1e293b;
+    }
+    
+    .seat-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .seat-badge {
+      background-color: #e0e7ff;
+      color: #4338ca;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    
+    .booking-footer {
+      padding: 1.25rem;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .price-info {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+    
+    .price-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-outline {
+      background-color: white;
+      border: 1px solid #d1d5db;
+      color: #4b5563;
+    }
+    
+    .btn-outline:hover {
+      background-color: #f9fafb;
+    }
+    
+    .btn-primary {
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+    }
+    
+    .btn-primary:hover {
+      background-color: #4338ca;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #64748b;
+    }
+    
+    .empty-state svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 1rem;
+      color: #cbd5e1;
+    }
+    
+    .empty-state h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-icon">R</div>
+      <div class="logo-text">Rapid Route</div>
+    </div>
+    
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="/driver_home" class="nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z"/>
+            <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z"/>
+          </svg>
+          Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/driver_schedules" class="nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+          </svg>
+          My Schedules
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/driver_bookings" class="nav-link active">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5v7A1.5 1.5 0 0 0 1.5 10H6v1H1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5v-1h4.5A1.5 1.5 0 0 0 16 8.5v-7A1.5 1.5 0 0 0 14.5 0h-13Zm0 1h13a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5ZM12 12.5a.5.5 0 1 1 1 0 .5.5 0 0 1-1 0Zm2 0a.5.5 0 1 1 1 0 .5.5 0 0 1-1 0ZM1.5 12h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1ZM1 14.25a.25.25 0 0 1 .25-.25h5.5a.25.25 0 1 1 0 .5h-5.5a.25.25 0 0 1-.25-.25Z"/>
+          </svg>
+          Passenger Bookings
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/logout" class="nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 1 0 7.286l-3.536-3.536a.5.5 0 0 1-.354-.146l-1.538-1.538A.5.5 0 0 1 9.414 12H6.5a.5.5 0 0 1 0-1h2.939a.5.5 0 0 1 .354-.146l1.538-1.538L15.854 8.354z"/>
+          </svg>
+          Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="main-content">
+    <div class="page-header">
+      <div class="page-title">Passenger Bookings</div>
+    </div>
+    
+    {% if bookings and bookings|length > 0 %}
+      {% for booking in bookings %}
+        <div class="booking-card">
+          <div class="booking-header">
+            <h3 class="booking-title">Booking #{{ booking._id }}</h3>
+            <span class="booking-status status-{{ booking.status|lower if 'status' in booking else 'confirmed' }}">
+              {{ booking.status if 'status' in booking else 'Confirmed' }}
+            </span>
+          </div>
+          
+          <div class="booking-body">
+            <div class="passenger-info">
+              <div class="passenger-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                </svg>
+              </div>
+              <div class="passenger-details">
+                <div class="passenger-name">{{ booking.passenger_name }}</div>
+                <div class="passenger-contact">
+                  <span>{{ booking.passenger_phone }}</span> • <span>{{ booking.passenger_email }}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="journey-details">
+              <div class="journey-row">
+                <div class="journey-label">Route</div>
+                <div class="journey-value">{{ booking.route if 'route' in booking else 'N/A' }}</div>
+              </div>
+              <div class="journey-row">
+                <div class="journey-label">Travel Date</div>
+                <div class="journey-value">{{ booking.travel_date if 'travel_date' in booking else 'N/A' }}</div>
+              </div>
+              <div class="journey-row">
+                <div class="journey-label">Seats</div>
+                <div class="journey-value">
+                  <div class="seat-list">
+                    {% if 'seats' in booking and booking.seats %}
+                      {% for seat in booking.seats %}
+                        <span class="seat-badge">{{ seat }}</span>
+                      {% endfor %}
+                    {% else %}
+                      N/A
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="booking-footer">
+            <div class="price-info">
+              Total Amount
+              <div class="price-value">${{ booking.total_price if 'total_price' in booking else 'N/A' }}</div>
+            </div>
+            <!-- Removing the View Details button -->
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5v7A1.5 1.5 0 0 0 1.5 10H6v1H1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5v-1h4.5A1.5 1.5 0 0 0 16 8.5v-7A1.5 1.5 0 0 0 14.5 0h-13Zm0 1h13a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5ZM12 12.5a.5.5 0 1 1 1 0 .5.5 0 0 1-1 0Zm2 0a.5.5 0 1 1 1 0 .5.5 0 0 1-1 0ZM1.5 12h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1ZM1 14.25a.25.25 0 0 1 .25-.25h5.5a.25.25 0 1 1 0 .5h-5.5a.25.25 0 0 1-.25-.25Z"/>
+        </svg>
+        <h3>No passenger bookings found</h3>
+        <p>It looks like you don't have any passenger bookings at the moment. Please check back later.</p>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

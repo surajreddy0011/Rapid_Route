@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+{% include 'head.html' %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registration Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      display: flex;
+      gap: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    .form-section, .preview-section {
+      flex: 1;
+      padding: 30px;
+    }
+    .preview-section {
+      flex:1;
+    }
+    h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    .row {
+      display: flex;
+      gap: 20px;
+    }
+    .row .column {
+      flex: 1;
+
+    }
+    button {
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #4338ca;
+    }
+    .preview-box {
+      background-color: #f0f0f0;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .preview-item {
+      margin-bottom: 10px;
+    }
+    .preview-label {
+      font-weight: bold;
+      color: #666;
+    }
+    .preview-value {
+      color: #333;
+    }
+    .margin-tp{
+      margin-top: 10px;
+    }
+    .over{
+      overflow: auto;
+      height: 800px;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-section">
+      <h2>Registration Form</h2>
+      <form action="passenger_registration_action" method="post" enctype="multipart/form-data">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your full name" required />
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email address" required />
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Create a password" required />
+
+        <label for="address">Address</label>
+        <textarea id="address" name="address" rows="2" placeholder="Enter your address" required></textarea>
+
+        <div class="row">
+          <div class="column">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" placeholder="Enter city" required style="width:95%;" />
+          </div>
+          <div class="column">
+            <label for="state">State</label>
+            <input type="text" id="state" name="state" placeholder="Enter state" style="width:100%;" required />
+          </div>
+        </div>
+
+        <label for="zip_code">Zip Code</label>
+        <input type="text" id="zip_code" name="zip_code" placeholder="Enter zip code" required />
+
+
+
+        <button type="submit">Submit Registration</button>
+      </form>
+    </div>
+    
+  </div>
+</body>
+</html>
